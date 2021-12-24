@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <title>Assignment (1)</title>
+</head>
+<body>
+    <script>
+        window.onload=async()=>{
+            const API_URL='https://s3.amazonaws.com/open-to-cors/assignment.json';
+            const response=await fetch(API_URL);
+            const data=await response.json();
+            const arr=Object.keys(data.products).map(key=>data.products[key]);
+            arr.sort((a,b)=>
+                parseInt(b.popularity)-parseInt(a.popularity)
+                );
+             displayData(arr);
+        }
+        
+        const displayData=(arr)=>{
+            $('#dataTable').DataTable({
+                 data:arr,
+                    columns:[
+                       {data:'subcategory'},
+                       {data:'title'},
+                       {data:'price'},
+                       {data:'popularity'}
+                    ],
+                    "ordering": false,
+                    "searching":false
+            });
+        }
+    </script>
+        <table id="dataTable" style="text-align:center">
+            <thead>
+                <tr>
+                    <th>Subcategory</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Popularity</th>
+                </tr>
+            </thead>
+        </table>
+</body>
+</html>
